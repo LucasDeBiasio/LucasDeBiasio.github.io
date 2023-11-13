@@ -1,6 +1,5 @@
 <script>
     let tabs = [
-        {name: 'About', link: '/about'},
         {name: 'Projects', link: '/projects'},
         {name: 'Experience', link: '/experience'},
         {name: 'Resume', link: '/resume'},
