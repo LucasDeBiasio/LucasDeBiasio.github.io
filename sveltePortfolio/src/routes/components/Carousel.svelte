@@ -29,7 +29,7 @@
 <style>
     .carousel {
         position: relative;
-        max-width: 600px; /* Adjust as needed */
+        max-width: 400px; /* Adjust as needed */
         margin: auto;
     }
 
