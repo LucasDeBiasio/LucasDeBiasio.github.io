@@ -1,4 +1,6 @@
 <script>
+    import Carousel from "./components/Carousel.svelte";
+
     let name = 'world';
     console.log(name);
 
@@ -10,11 +12,11 @@
     
 </script>
 
-<div class="bg-red-500 flex items-center h-[95.3vh]">
-    <div class="flex">
-        <div class="bg-green-500 w-4/6">
-            <h1 class="font-black text-6xl Roboto">Lucas <span class="uppercase"> De Biasio</span>,</h1>
-            <p class="text-lg font-light py-2">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer consectetur, turpis at placerat cursus, enim neque blandit dui, sit amet aliquet ex lectus sit amet lorem. Quisque sagittis risus quis dictum interdum. Fusce eget erat hendrerit ex egestas auctor et vitae est. Praesent sed ullamcorper erat, sed tempor justo.</p>
+<div class="absolute top-[40vh] h-[50vh]">
+    <div class="mx-40 gap-10 flex">
+        <div class="w-4/6">
+            <h1 class="font-black text-7xl Roboto">Lucas <span class="uppercase"> De Biasio</span>,</h1>
+            <p class="text-xl font-light py-2">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer consectetur, turpis at placerat cursus, enim neque blandit dui, sit amet aliquet ex lectus sit amet lorem. Quisque sagittis risus quis dictum interdum. Fusce eget erat hendrerit ex egestas auctor et vitae est. Praesent sed ullamcorper erat, sed tempor justo.</p>
             <div class="font-light Roboto sm:flex items-center">
                 {#each socials as social, index}
                     <div class="duration-200 px-2 rounded-lg hover:bg-slate-700">
@@ -26,10 +28,7 @@
                 {/each}
                 </div>
         </div>
-        <div class="bg-blue-500 w-2/6">
-            <h1>hi</h1>
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer consectetur, turpis at placerat cursus, enim neque blandit dui, sit amet aliquet ex lectus sit amet lorem. Quisque sagittis risus quis dictum interdum. Fusce eget erat hendrerit ex egestas auctor et vitae est. Praesent sed ullamcorper erat, sed tempor justo. Sed hendrerit ante at diam placerat, vitae fermentum lectus aliquet. Nulla ac nibh ut justo cursus molestie nec eget justo. Nulla sollicitudin ultrices erat a tempus. Morbi egestas semper nulla congue facilisis.</p>
-        </div>
+        <Carousel></Carousel>
     </div>
 </div>
 
