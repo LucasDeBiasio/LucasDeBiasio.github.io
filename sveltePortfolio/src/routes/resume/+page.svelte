@@ -8,7 +8,7 @@
         type="application/pdf"
         title="My Resumé"
         data="resume.pdf"
-        width="600"
+        width="800"
         height="700"
         >
         </object>
