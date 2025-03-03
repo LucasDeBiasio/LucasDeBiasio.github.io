@@ -1,4 +1,4 @@
-name: Deploy Svelte App to GitHub Pages
+name: Deploy SvelteKit App to GitHub Pages
 
 on:
   push:
@@ -23,50 +23,37 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-        
+      
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: '18'
-          
+      
       - name: Install Dependencies
         run: |
           cd sveltePortfolio
           npm install
-          
-      - name: Build Svelte App
+      
+      - name: Build SvelteKit App
         run: |
           cd sveltePortfolio
           npm run build
           
-      - name: Prepare for deployment
-        run: |
-          # Find where app.html is located
-          APP_HTML_PATH=$(find sveltePortfolio -name "app.html" | head -n1)
-          BUILD_DIR=$(dirname "$APP_HTML_PATH")
-          
-          if [ -n "$APP_HTML_PATH" ]; then
-            echo "Found app.html at $APP_HTML_PATH"
-            # Copy app.html to index.html
-            cp "$APP_HTML_PATH" "$BUILD_DIR/index.html"
-            echo "Copied to index.html"
-          else
-            echo "Warning: app.html not found"
-          fi
-          
-          # Show what files we have
-          echo "Files in build directory:"
-          ls -la "$BUILD_DIR"
-          
+          # Show the build output directories
+          echo "Build output:"
+          ls -la build || echo "No build directory"
+          ls -la .svelte-kit || echo "No .svelte-kit directory"
+          ls -la .svelte-kit/output || echo "No .svelte-kit/output directory"
+      
       - name: Setup Pages
         uses: actions/configure-pages@v5
-        
+      
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          # Adjust this path to the directory containing your HTML and JS files
-          path: './sveltePortfolio/src'  # Change this to where your app.html is located
-          
+          # Use the static output directory from SvelteKit build
+          path: './sveltePortfolio/build'  # This might need to be adjusted based on your build output
+      
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
