@@ -33,17 +33,17 @@ jobs:
         run: |
           echo "Repository structure:"
           ls -la
-          echo "SveltePortfolio contents:"
-          ls -la SveltePortfolio || echo "Directory not found"
+          echo "sveltePortfolio contents:"
+          ls -la sveltePortfolio || echo "Directory not found"
       
       - name: Install Dependencies
         run: |
-          cd SveltePortfolio
+          cd sveltePortfolio
           npm install
       
       - name: Debug - Package Configuration
         run: |
-          cd SveltePortfolio
+          cd sveltePortfolio
           echo "package.json contents:"
           cat package.json
           echo "svelte.config.js contents (if exists):"
@@ -51,12 +51,12 @@ jobs:
       
       - name: Build SvelteKit App
         run: |
-          cd SveltePortfolio
+          cd sveltePortfolio
           npm run build
       
       - name: Debug - Build Output
         run: |
-          cd SveltePortfolio
+          cd sveltePortfolio
           echo "Build directories:"
           find . -type d -name "build" -o -name "public" -o -name "dist" -o -name ".svelte-kit"
           
@@ -82,7 +82,7 @@ jobs:
       - name: Prepare for deployment
         run: |
           # Try to find the built index.html
-          cd SveltePortfolio
+          cd sveltePortfolio
           BUILD_DIR=""
           
           # Check common build output directories
@@ -117,7 +117,7 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: './SveltePortfolio/${{ env.BUILD_DIR }}'
+          path: './sveltePortfolio/${{ env.BUILD_DIR }}'
       
       - name: Deploy to GitHub Pages
         id: deployment
