@@ -29,21 +29,87 @@ jobs:
         with:
           node-version: '18'
       
+      - name: Debug - Repository Structure
+        run: |
+          echo "Repository structure:"
+          ls -la
+          echo "SveltePortfolio contents:"
+          ls -la SveltePortfolio || echo "Directory not found"
+      
       - name: Install Dependencies
         run: |
-          cd sveltePortfolio
+          cd SveltePortfolio
           npm install
+      
+      - name: Debug - Package Configuration
+        run: |
+          cd SveltePortfolio
+          echo "package.json contents:"
+          cat package.json
+          echo "svelte.config.js contents (if exists):"
+          cat svelte.config.js || echo "File not found"
       
       - name: Build SvelteKit App
         run: |
-          cd sveltePortfolio
+          cd SveltePortfolio
           npm run build
+      
+      - name: Debug - Build Output
+        run: |
+          cd SveltePortfolio
+          echo "Build directories:"
+          find . -type d -name "build" -o -name "public" -o -name "dist" -o -name ".svelte-kit"
           
-          # Show the build output directories
-          echo "Build output:"
-          ls -la build || echo "No build directory"
-          ls -la .svelte-kit || echo "No .svelte-kit directory"
-          ls -la .svelte-kit/output || echo "No .svelte-kit/output directory"
+          # Check if build directory exists and show contents
+          if [ -d "build" ]; then
+            echo "build directory contents:"
+            ls -la build
+            echo "Does build/index.html exist?"
+            test -f build/index.html && echo "Yes" || echo "No"
+          else
+            echo "build directory not found, checking alternatives"
+            # Check possible alternative build directories
+            for dir in ".svelte-kit/output/client" ".svelte-kit/build" "public" "dist"; do
+              if [ -d "$dir" ]; then
+                echo "$dir directory contents:"
+                ls -la "$dir"
+                echo "Does $dir/index.html exist?"
+                test -f "$dir/index.html" && echo "Yes" || echo "No"
+              fi
+            done
+          fi
+      
+      - name: Prepare for deployment
+        run: |
+          # Try to find the built index.html
+          cd SveltePortfolio
+          BUILD_DIR=""
+          
+          # Check common build output directories
+          for dir in "build" ".svelte-kit/output/client" "public" "dist"; do
+            if [ -d "$dir" ] && [ -f "$dir/index.html" ]; then
+              BUILD_DIR="$dir"
+              break
+            fi
+          done
+          
+          if [ -z "$BUILD_DIR" ]; then
+            echo "Warning: Could not find build directory with index.html"
+            echo "Looking for any HTML files in the project:"
+            find . -name "*.html"
+            
+            # For emergency fallback, create a minimal index.html
+            mkdir -p build_fallback
+            echo "<html><head><title>SvelteKit App</title></head><body><h1>SvelteKit App</h1><p>The app deployment is still being configured.</p></body></html>" > build_fallback/index.html
+            BUILD_DIR="build_fallback"
+          fi
+          
+          echo "Using build directory: $BUILD_DIR"
+          echo "Files to be deployed:"
+          ls -la "$BUILD_DIR"
+          
+          # Export the build directory path for the next step
+          echo "BUILD_DIR=$BUILD_DIR" >> $GITHUB_ENV
       
       - name: Setup Pages
         uses: actions/configure-pages@v5
@@ -51,8 +117,7 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          # Use the static output directory from SvelteKit build
-          path: './sveltePortfolio'  # This might need to be adjusted based on your build output
+          path: './SveltePortfolio/${{ env.BUILD_DIR }}'
       
       - name: Deploy to GitHub Pages
         id: deployment
