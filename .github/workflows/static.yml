@@ -65,7 +65,7 @@ jobs:
         uses: actions/upload-pages-artifact@v3
         with:
           # Adjust this path to the directory containing your HTML and JS files
-          path: './SveltePortfolio/src'  # Change this to where your app.html is located
+          path: './sveltePortfolio/src'  # Change this to where your app.html is located
           
       - name: Deploy to GitHub Pages
         id: deployment
