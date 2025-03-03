@@ -39,14 +39,33 @@ jobs:
           cd SveltePortfolio
           npm run build
           
+      - name: Prepare for deployment
+        run: |
+          # Find where app.html is located
+          APP_HTML_PATH=$(find SveltePortfolio -name "app.html" | head -n1)
+          BUILD_DIR=$(dirname "$APP_HTML_PATH")
+          
+          if [ -n "$APP_HTML_PATH" ]; then
+            echo "Found app.html at $APP_HTML_PATH"
+            # Copy app.html to index.html
+            cp "$APP_HTML_PATH" "$BUILD_DIR/index.html"
+            echo "Copied to index.html"
+          else
+            echo "Warning: app.html not found"
+          fi
+          
+          # Show what files we have
+          echo "Files in build directory:"
+          ls -la "$BUILD_DIR"
+          
       - name: Setup Pages
         uses: actions/configure-pages@v5
         
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          # Upload only the build output
-          path: './SveltePortfolio'  # Adjust this path if your build output is elsewhere
+          # Adjust this path to the directory containing your HTML and JS files
+          path: './SveltePortfolio/src'  # Change this to where your app.html is located
           
       - name: Deploy to GitHub Pages
         id: deployment
