@@ -31,18 +31,18 @@ jobs:
           
       - name: Install Dependencies
         run: |
-          cd SveltePortfolio
+          cd sveltePortfolio
           npm install
           
       - name: Build Svelte App
         run: |
-          cd SveltePortfolio
+          cd sveltePortfolio
           npm run build
           
       - name: Prepare for deployment
         run: |
           # Find where app.html is located
-          APP_HTML_PATH=$(find SveltePortfolio -name "app.html" | head -n1)
+          APP_HTML_PATH=$(find sveltePortfolio -name "app.html" | head -n1)
           BUILD_DIR=$(dirname "$APP_HTML_PATH")
           
           if [ -n "$APP_HTML_PATH" ]; then
